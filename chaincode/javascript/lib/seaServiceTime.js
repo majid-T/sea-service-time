@@ -15,20 +15,20 @@ class SeaServiceTime extends Contract {
             "============= [SeaServiceContract-START] : Creating Record ==========="
         );
 
-        const serviceTimeReord = {
+        const serviceTimeRecord = {
             name: _name,
             dateOfBirth: _dateOfBirth,
             cdn: _cdn,
             recordId: _name.replace(" ", "").concat(_cdn),
             seaTime: "00",
             status: "GRAD",
-            rank: "nCadet",
+            rank: "Cadet",
             dateReg: String(new Date()),
         };
 
         await ctx.stub.putState(
-            recordId,
-            Buffer.from(JSON.stringify(serviceTimeReord))
+            serviceTimeRecord.recordId,
+            Buffer.from(JSON.stringify(serviceTimeRecord))
         );
         console.info(
             "============= [SeaServiceContract-END] : Creating Record ==========="
@@ -48,6 +48,46 @@ class SeaServiceTime extends Contract {
         return recordAsBytes.toString();
     }
     // ====================  ====================  ====================
+
+    async initLedger(ctx) {
+        console.info(
+            "============= [SeaServiceContract-START] : Creating sample Data ==========="
+        );
+        const sampleRecord1 = {
+            name: "Majid Shockoohi",
+            dateOfBirth: "1984/04/28",
+            cdn: "CDN123456789",
+            recordId: "Majid Shockoohi".replace(" ", "").concat("CDN123456789"),
+            seaTime: "00",
+            status: "GRAD",
+            rank: "Cadet",
+            dateReg: String(new Date()),
+        };
+
+        const sampleRecord2 = {
+            name: "Jack Sparrow",
+            dateOfBirth: "1800/04/28",
+            cdn: "CDN987654321",
+            recordId: "Jack Sparrow".replace(" ", "").concat("CDN987654321"),
+            seaTime: "200",
+            status: "RETIRED",
+            rank: "Master Mariner",
+            dateReg: String(new Date()),
+        };
+
+        await ctx.stub.putState(
+            sampleRecord1.recordId,
+            Buffer.from(JSON.stringify(sampleRecord1))
+        );
+        await ctx.stub.putState(
+            sampleRecord2.recordId,
+            Buffer.from(JSON.stringify(sampleRecord2))
+        );
+
+        console.info(
+            "============= [SeaServiceContract-END] : Creating sample Data ==========="
+        );
+    }
 }
 
 module.exports = SeaServiceTime;
