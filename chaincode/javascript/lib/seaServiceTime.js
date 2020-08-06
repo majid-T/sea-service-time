@@ -14,6 +14,10 @@ class SeaServiceTime extends Contract {
         console.info(
             "============= [SeaServiceContract-START] : Creating Record ==========="
         );
+        console.info(
+            `[SeaServiceContract-createRecord]: creating records with params
+            _name:${_name} | _dateOfBirth:${_dateOfBirth} | __cdn:${_cdn}`
+        );
 
         const serviceTimeRecord = {
             name: _name,
@@ -24,6 +28,7 @@ class SeaServiceTime extends Contract {
             status: "GRAD",
             rank: "Cadet",
             dateReg: String(new Date()),
+            serviceTimes: [],
         };
 
         await ctx.stub.putState(
@@ -39,13 +44,53 @@ class SeaServiceTime extends Contract {
         console.info(
             "============= [SeaServiceContract-START] : Query Record ==========="
         );
-        console.info(`My Params:${_recordId}`);
+        console.info(
+            `[SeaServiceContract-queryServiceTime]: query record with params
+            _recordId:${_recordId}`
+        );
+
         const recordAsBytes = await ctx.stub.getState(_recordId);
         if (!recordAsBytes || recordAsBytes.length === 0) {
             throw new Error(`${_recordId} does not exist`);
         }
         console.log(recordAsBytes.toString());
         return recordAsBytes.toString();
+    }
+
+    async addServiceTime(
+        ctx,
+        _recordId,
+        _vesselOwner,
+        _vesselNo,
+        _dateSignIn,
+        _dateSignOff,
+        _time
+    ) {
+        ("============= [SeaServiceContract-START] : Adding service time ===========");
+        console.info(
+            `[SeaServiceContract-addServiceTime]: Adding service time with params
+            _recordId:${_recordId} | _vesselOwner:${_vesselOwner} | _vesselNo:${_vesselNo}
+            _dateSignIn:${_dateSignIn} | _dateSignOff:${_dateSignOff} | _time:${_time}`
+        );
+
+        const tmpRecord = {
+            _vesselOwner,
+            _vesselNo,
+            _dateSignIn,
+            _dateSignOff,
+            _time,
+        };
+
+        const recordAsBytes = await ctx.stub.getState(_recordId);
+        if (!recordAsBytes || recordAsBytes.length === 0) {
+            throw new Error(`${_recordId} does not exist`);
+        }
+        const record = JSON.parse(recordAsBytes.toString());
+        record.seaTime = String(parseInt(_time) + 10);
+        record.serviceTimes.push(tmpRecord);
+
+        await ctx.stub.putState(_recordId, Buffer.from(JSON.stringify(record)));
+        ("============= [SeaServiceContract-END] : Adding service time ===========");
     }
     // ====================  ====================  ====================
 
@@ -62,6 +107,7 @@ class SeaServiceTime extends Contract {
             status: "GRAD",
             rank: "Cadet",
             dateReg: String(new Date()),
+            serviceTimes: [],
         };
 
         const sampleRecord2 = {
@@ -73,6 +119,7 @@ class SeaServiceTime extends Contract {
             status: "RETIRED",
             rank: "Master Mariner",
             dateReg: String(new Date()),
+            serviceTimes: [],
         };
 
         await ctx.stub.putState(
