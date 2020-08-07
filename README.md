@@ -23,3 +23,14 @@ DAPP on Hyper Ledger Fabric for recording seafarers sea service time on a dister
         height="50%"
       />
   </div>
+
+## Class Diagram
+
+ <div align="center" >
+      <img
+        src="./media/stateDg.png"
+        alt="stateDg"
+        width="50%"
+        height="50%"
+      />
+  </div>
