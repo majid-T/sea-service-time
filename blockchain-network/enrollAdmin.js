@@ -3,6 +3,7 @@
  *
  * SPDX-License-Identifier: Apache-2.0
  */
+//// Run this file in backend root folder node register users
 
 "use strict";
 
@@ -18,6 +19,8 @@ async function main() {
       __dirname,
       "..",
       "..",
+      "HLF_SETUP",
+      "fabric-samples",
       "test-network",
       "organizations",
       "peerOrganizations",
