@@ -1,8 +1,15 @@
-# sea-service-time
+# Sea-Service-Time
 
-DAPP on Hyper Ledger Fabric for recording seafarers sea service time on a disterbuted ledger
+DAPP on Hyper Ledger Fabric for recording seafarers sea service time on a disterbuted ledger.
 
-## Modeling Ver:0.1.0
+This repo conisist of 4 parts
+
+- [backend](https://github.com/majid-T/sea-service-time/tree/master/backend): Which is the part which exposes chaincode function as REST endpoints. It uses JWT for authentication.
+- [blockchain-network](https://github.com/majid-T/sea-service-time/tree/master/blockchain-network): Inlucdes instruction on seting up the network and registering admin and users.
+- [chaincode](https://github.com/majid-T/sea-service-time/tree/master/chaincode/javascript): it inlclude's chaincode package which will be installed on each peer.
+- frontend: the ReacJs frontend part to connect to the fabric nodes.
+
+## Modeling Ver:0.3.0
 
 ### Assets
 
@@ -28,8 +35,8 @@ DAPP on Hyper Ledger Fabric for recording seafarers sea service time on a dister
       <img
         src="./media/stateDg.png"
         alt="stateDg"
-        width="50%"
-        height="50%"
+        width="65%"
+        height="65%"
       />
   </div>
 
@@ -61,8 +68,8 @@ Checked functions will change the state of blockchain and will cause a transacti
       <img
         src="./media/classDg.png"
         alt="classDg"
-        width="50%"
-        height="50%"
+        width="65%"
+        height="65%"
       />
   </div>
   
@@ -82,7 +89,7 @@ Checked functions will change the state of blockchain and will cause a transacti
       <img
         src="./media/seqDg.png"
         alt="seqDg"
-        width="50%"
-        height="50%"
+        width="65%"
+        height="65%"
       />
   </div>
