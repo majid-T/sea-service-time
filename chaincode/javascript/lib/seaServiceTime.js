@@ -41,23 +41,6 @@ class SeaServiceTime extends Contract {
         );
     }
 
-    async queryServiceTime(ctx, _recordId) {
-        console.info(
-            "============= [SeaServiceContract-START] : Query Record ==========="
-        );
-        console.info(
-            `[SeaServiceContract-queryServiceTime]: query record with params
-            _recordId:${_recordId}`
-        );
-
-        const recordAsBytes = await ctx.stub.getState(_recordId);
-        if (!recordAsBytes || recordAsBytes.length === 0) {
-            throw new Error(`${_recordId} does not exist`);
-        }
-        console.log(recordAsBytes.toString());
-        return recordAsBytes.toString();
-    }
-
     async addServiceTime(
         ctx,
         _recordId,
@@ -120,6 +103,24 @@ class SeaServiceTime extends Contract {
             "============= [SeaServiceContract-END] : Promote Candidate ==========="
         );
     }
+
+    async queryServiceTime(ctx, _recordId) {
+        console.info(
+            "============= [SeaServiceContract-START] : Query Record ==========="
+        );
+        console.info(
+            `[SeaServiceContract-queryServiceTime]: query record with params
+            _recordId:${_recordId}`
+        );
+
+        const recordAsBytes = await ctx.stub.getState(_recordId);
+        if (!recordAsBytes || recordAsBytes.length === 0) {
+            throw new Error(`${_recordId} does not exist`);
+        }
+        console.log(recordAsBytes.toString());
+        return recordAsBytes.toString();
+    }
+
     // ====================  ====================  ====================
 
     async initLedger(ctx) {
