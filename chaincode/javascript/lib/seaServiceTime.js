@@ -60,11 +60,11 @@ class SeaServiceTime extends Contract {
         );
 
         const tmpRecord = {
-            _vesselOwner,
-            _vesselNo,
-            _dateSignIn,
-            _dateSignOff,
-            _time,
+            vesselOwner: _vesselOwner,
+            vesselNo: _vesselNo,
+            dateSignIn: _dateSignIn,
+            dateSignOff: _dateSignOff,
+            time: _time,
         };
 
         const recordAsBytes = await ctx.stub.getState(_recordId);
@@ -73,7 +73,7 @@ class SeaServiceTime extends Contract {
         }
         const record = JSON.parse(recordAsBytes.toString());
         record.seaTime = String(parseInt(_time) + parseInt(record.seaTime));
-        record.serviceTimes.push(tmpRecord);
+        record.serviceTimes.unshift(tmpRecord);
 
         await ctx.stub.putState(_recordId, Buffer.from(JSON.stringify(record)));
 
