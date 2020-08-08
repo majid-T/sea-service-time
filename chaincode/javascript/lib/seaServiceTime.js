@@ -7,6 +7,7 @@
 "use strict";
 
 const { Contract } = require("fabric-contract-api");
+const ranks = ["Master Mariner", "Chief Mate", "Watchkeeping Mate", "Cadet"];
 
 class SeaServiceTime extends Contract {
     // ==================== Contract public functions  ====================
@@ -86,11 +87,38 @@ class SeaServiceTime extends Contract {
             throw new Error(`${_recordId} does not exist`);
         }
         const record = JSON.parse(recordAsBytes.toString());
-        record.seaTime = String(parseInt(_time) + 10);
+        record.seaTime = String(parseInt(_time) + parseInt(record.seaTime));
         record.serviceTimes.push(tmpRecord);
 
         await ctx.stub.putState(_recordId, Buffer.from(JSON.stringify(record)));
+
         ("============= [SeaServiceContract-END] : Adding service time ===========");
+    }
+
+    async promoteCandidate(ctx, _recordId, _newRank) {
+        console.info(
+            "============= [SeaServiceContract-START] : Promote Candidate ==========="
+        );
+        console.info(
+            `[SeaServiceContract-queryServiceTime]: Promote candidate with params
+            _recordId:${_recordId} | _newRank:${_newRank}`
+        );
+        if (!ranks.includes(_newRank)) {
+            throw new Error(`${_newRank} is not valid a rank`);
+        }
+
+        const recordAsBytes = await ctx.stub.getState(_recordId);
+        if (!recordAsBytes || recordAsBytes.length === 0) {
+            throw new Error(`${_recordId} does not exist`);
+        }
+        const record = JSON.parse(recordAsBytes.toString());
+        record.rank = _newRank;
+
+        await ctx.stub.putState(_recordId, Buffer.from(JSON.stringify(record)));
+
+        console.info(
+            "============= [SeaServiceContract-END] : Promote Candidate ==========="
+        );
     }
     // ====================  ====================  ====================
 
