@@ -74,6 +74,7 @@ class SeaServiceTime extends Contract {
         const record = JSON.parse(recordAsBytes.toString());
         record.seaTime = String(parseInt(_time) + parseInt(record.seaTime));
         record.serviceTimes.unshift(tmpRecord);
+        record.status = "ACTIVE";
 
         await ctx.stub.putState(_recordId, Buffer.from(JSON.stringify(record)));
 
