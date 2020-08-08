@@ -373,12 +373,65 @@ router.get("/query-service/:id", async (req, res) => {
 // @access      Private
 router.put("/retire/:id", async (req, res) => {
   try {
-    //Add chaincode creating code here
-    console.log(`Retiring id ${req.params.id}`);
+    // load the network configuration
+    const ccpPath = path.resolve(
+      __dirname,
+      "..",
+      "..",
+      "..",
+      "..",
+      "HLF_SETUP",
+      "fabric-samples",
+      "test-network",
+      "organizations",
+      "peerOrganizations",
+      "org1.example.com",
+      "connection-org1.json"
+    );
+    const ccp = JSON.parse(fs.readFileSync(ccpPath, "utf8"));
 
-    //Add chaincode creating code here
+    // Create a new file system based wallet for managing identities.
+    const walletPath = path.join(process.cwd(), "wallet");
+    const wallet = await Wallets.newFileSystemWallet(walletPath);
+    console.log(`Wallet path: ${walletPath}`);
 
-    res.status(200).send("ok");
+    // Check to see if we have the required user.
+    const identity = await wallet.get("admin");
+    if (!identity) {
+      console.log(
+        'An identity for the user "admin" does not exist in the wallet'
+      );
+      console.log("Run the enrollAdmin.js application before retrying");
+      return res.status(400).json({ msg: "No such user is register in CA" });
+    }
+
+    // Create a new gateway for connecting to our peer node.
+    const gateway = new Gateway();
+    await gateway.connect(ccp, {
+      wallet,
+      identity: "admin",
+      discovery: { enabled: true, asLocalhost: true },
+    });
+
+    // Get the network (channel) our contract is deployed to.
+    const network = await gateway.getNetwork("mychannel");
+
+    // Get the contract from the network.
+    const contract = network.getContract("seaservicetime");
+
+    // Evaluate the specified transaction.
+    const result = await contract.evaluateTransaction(
+      "retireCandidate",
+      req.params.id
+    );
+    console.log(
+      `Transaction has been evaluated, result is: ${result.toString()}`
+    );
+
+    // Disconnect from the gateway.
+    await gateway.disconnect();
+
+    res.status(200).json(JSON.parse(result.toString()));
   } catch (err) {
     console.log(err.message);
     res.status(500).send("Server Error");
