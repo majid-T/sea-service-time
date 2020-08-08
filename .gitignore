@@ -105,3 +105,4 @@ dist
 
 # custom ignores
 docs/
+backend/config/default.json
