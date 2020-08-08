@@ -4,6 +4,10 @@ const { check, validationResult } = require("express-validator");
 const auth = require("../../middleware/auth");
 const User = require("../../models/User");
 
+const { Gateway, Wallets } = require("fabric-network");
+const path = require("path");
+const fs = require("fs");
+
 // @route       POST api/contract/createRecord
 // @desc        Creating Record for seafarer
 // @access      Private
@@ -27,24 +31,72 @@ router.post(
     try {
       const user = await User.findById(req.user.id).select("-password");
 
-      const serviceTimeRecord = {
-        name: req.body.name,
-        dateOfBirth: req.body.dateOfBirth,
-        cdn: req.body.dateOfBirth,
-        recordId: req.body.name.replace(" ", "").concat(req.body.cdn),
-        seaTime: "00",
-        status: "GRAD",
-        rank: "Cadet",
-        dateReg: String(new Date()),
-        serviceTimes: [],
-      };
+      const name = req.body.name;
+      const dateOfBirth = req.body.dateOfBirth;
+      const cdn = req.body.cdn;
 
       //Add chaincode creating code here
       console.log(`creating record by ${user}`);
-      console.log(`Record is ${serviceTimeRecord.name}`);
-      //Add chaincode creating code here --END
+      // load the network configuration
+      const ccpPath = path.resolve(
+        __dirname,
+        "..",
+        "..",
+        "..",
+        "..",
+        "HLF_SETUP",
+        "fabric-samples",
+        "test-network",
+        "organizations",
+        "peerOrganizations",
+        "org1.example.com",
+        "connection-org1.json"
+      );
+      const ccp = JSON.parse(fs.readFileSync(ccpPath, "utf8"));
 
-      res.json(serviceTimeRecord);
+      // Create a new file system based wallet for managing identities.
+      const walletPath = path.join(process.cwd(), "wallet");
+      const wallet = await Wallets.newFileSystemWallet(walletPath);
+      console.log(`Wallet path: ${walletPath}`);
+
+      // Check to see if we have the required user.
+      const identity = await wallet.get("admin");
+      if (!identity) {
+        console.log(
+          'An identity for the user "admin" does not exist in the wallet'
+        );
+        console.log("Run the enrollAdmin.js application before retrying");
+        return res.status(400).json({ msg: "No such user is register in CA" });
+      }
+
+      // Create a new gateway for connecting to our peer node.
+      const gateway = new Gateway();
+      await gateway.connect(ccp, {
+        wallet,
+        identity: "admin",
+        discovery: { enabled: true, asLocalhost: true },
+      });
+
+      // Get the network (channel) our contract is deployed to.
+      const network = await gateway.getNetwork("mychannel");
+
+      // Get the contract from the network.
+      const contract = network.getContract("seaservicetime");
+
+      // Evaluate the specified transaction.
+      const result = await contract.submitTransaction(
+        "createRecord",
+        name,
+        dateOfBirth,
+        cdn
+      );
+      console.log(`${result}`);
+
+      // Disconnect from the gateway.
+      await gateway.disconnect();
+
+      res.status(200).send(result.toString());
+      //Add chaincode creating code here --END
     } catch (err) {
       console.log(err.message);
       res.status(500).send("Server Error");
@@ -74,6 +126,7 @@ router.put(
       return res.status(400).json({ errors: errors.array() });
     }
 
+    const recordId = req.params.id;
     const vesselOwner = req.body.vesselOwner;
     const vesselNo = req.body.vesselNo;
     const dateSignIn = req.body.dateSignIn;
@@ -82,15 +135,70 @@ router.put(
 
     try {
       //Add chaincode creating code here
-      console.log(`Adding time for id ${req.params.id}`);
-      console.log(`vesselOwner ${vesselOwner}`);
-      console.log(`vesselNo ${vesselNo}`);
-      console.log(`dateSignIn ${dateSignIn}`);
-      console.log(`dateSignOff ${dateSignOff}`);
-      console.log(`time ${time}`);
-      //Add chaincode creating code here - END
+      // load the network configuration
+      const ccpPath = path.resolve(
+        __dirname,
+        "..",
+        "..",
+        "..",
+        "..",
+        "HLF_SETUP",
+        "fabric-samples",
+        "test-network",
+        "organizations",
+        "peerOrganizations",
+        "org1.example.com",
+        "connection-org1.json"
+      );
+      const ccp = JSON.parse(fs.readFileSync(ccpPath, "utf8"));
 
-      res.json("record added");
+      // Create a new file system based wallet for managing identities.
+      const walletPath = path.join(process.cwd(), "wallet");
+      const wallet = await Wallets.newFileSystemWallet(walletPath);
+      console.log(`Wallet path: ${walletPath}`);
+
+      // Check to see if we have the required user.
+      const identity = await wallet.get("admin");
+      if (!identity) {
+        console.log(
+          'An identity for the user "admin" does not exist in the wallet'
+        );
+        console.log("Run the enrollAdmin.js application before retrying");
+        return res.status(400).json({ msg: "No such user is register in CA" });
+      }
+
+      // Create a new gateway for connecting to our peer node.
+      const gateway = new Gateway();
+      await gateway.connect(ccp, {
+        wallet,
+        identity: "admin",
+        discovery: { enabled: true, asLocalhost: true },
+      });
+
+      // Get the network (channel) our contract is deployed to.
+      const network = await gateway.getNetwork("mychannel");
+
+      // Get the contract from the network.
+      const contract = network.getContract("seaservicetime");
+
+      // Evaluate the specified transaction.
+      const result = await contract.submitTransaction(
+        "addServiceTime",
+        recordId,
+        vesselOwner,
+        vesselNo,
+        dateSignIn,
+        dateSignOff,
+        time
+      );
+
+      console.log(`${result}`);
+
+      // Disconnect from the gateway.
+      await gateway.disconnect();
+
+      res.status(200).send(result.toString());
+      //Add chaincode creating code here - END
     } catch (err) {
       console.log(err.message);
       res.status(500).send("Server Error");
@@ -136,9 +244,66 @@ router.get("/query-service/:id", async (req, res) => {
     //Add chaincode creating code here
     console.log(`geting service for id ${req.params.id}`);
 
-    //Add chaincode creating code here
+    //Chaincode calling
+    // load the network configuration
+    const ccpPath = path.resolve(
+      __dirname,
+      "..",
+      "..",
+      "..",
+      "..",
+      "HLF_SETUP",
+      "fabric-samples",
+      "test-network",
+      "organizations",
+      "peerOrganizations",
+      "org1.example.com",
+      "connection-org1.json"
+    );
+    const ccp = JSON.parse(fs.readFileSync(ccpPath, "utf8"));
 
-    res.status(200).json({ id: req.params.id, msg: "Query done" });
+    // Create a new file system based wallet for managing identities.
+    const walletPath = path.join(process.cwd(), "wallet");
+    const wallet = await Wallets.newFileSystemWallet(walletPath);
+    console.log(`Wallet path: ${walletPath}`);
+
+    // Check to see if we have the required user.
+    const identity = await wallet.get("admin");
+    if (!identity) {
+      console.log(
+        'An identity for the user "admin" does not exist in the wallet'
+      );
+      console.log("Run the enrollAdmin.js application before retrying");
+      return res.status(400).json({ msg: "No such user is register in CA" });
+    }
+
+    // Create a new gateway for connecting to our peer node.
+    const gateway = new Gateway();
+    await gateway.connect(ccp, {
+      wallet,
+      identity: "admin",
+      discovery: { enabled: true, asLocalhost: true },
+    });
+
+    // Get the network (channel) our contract is deployed to.
+    const network = await gateway.getNetwork("mychannel");
+
+    // Get the contract from the network.
+    const contract = network.getContract("seaservicetime");
+
+    // Evaluate the specified transaction.
+    const result = await contract.evaluateTransaction(
+      "queryServiceTime",
+      req.params.id
+    );
+    console.log(
+      `Transaction has been evaluated, result is: ${result.toString()}`
+    );
+
+    // Disconnect from the gateway.
+    await gateway.disconnect();
+
+    res.status(200).json(JSON.parse(result.toString()));
   } catch (err) {
     console.log(err.message);
     res.status(500).send("Server error");
@@ -155,7 +320,7 @@ router.put("/retire/:id", async (req, res) => {
 
     //Add chaincode creating code here
 
-    res.json("Retire done");
+    res.status(200).send("ok");
   } catch (err) {
     console.log(err.message);
     res.status(500).send("Server Error");
