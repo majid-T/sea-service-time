@@ -52,23 +52,6 @@ router.post(
   }
 );
 
-// @route       GET api/contract/query-service/:id
-// @desc        Get service for user
-// @access      Public
-router.get("/query-service/:id", async (req, res) => {
-  try {
-    //Add chaincode creating code here
-    console.log(`geting service for id ${req.params.id}`);
-
-    //Add chaincode creating code here
-
-    res.status(200).json({ id: req.params.id, msg: "Query done" });
-  } catch (err) {
-    console.log(err.message);
-    res.status(500).send("Server error");
-  }
-});
-
 // @route       PUT api/contract/add-service-time/:id
 // @desc        Add service time for record
 // @access      Private
@@ -144,6 +127,23 @@ router.put(
     }
   }
 );
+
+// @route       GET api/contract/query-service/:id
+// @desc        Get service for user
+// @access      Public
+router.get("/query-service/:id", async (req, res) => {
+  try {
+    //Add chaincode creating code here
+    console.log(`geting service for id ${req.params.id}`);
+
+    //Add chaincode creating code here
+
+    res.status(200).json({ id: req.params.id, msg: "Query done" });
+  } catch (err) {
+    console.log(err.message);
+    res.status(500).send("Server error");
+  }
+});
 
 // @route       PUT api/contract/retire/:id
 // @desc        Reitre a candidate

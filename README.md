@@ -22,7 +22,7 @@ DAPP on Hyper Ledger Fabric for recording seafarers sea service time on a dister
 }
 ```
 
-## Lifescyle and state Diagram
+## Lifecycle and state Diagram
 
  <div align="center" >
       <img

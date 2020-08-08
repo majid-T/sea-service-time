@@ -36,9 +36,11 @@ class SeaServiceTime extends Contract {
             serviceTimeRecord.recordId,
             Buffer.from(JSON.stringify(serviceTimeRecord))
         );
+
         console.info(
             "============= [SeaServiceContract-END] : Creating Record ==========="
         );
+        return serviceTimeRecord;
     }
 
     async addServiceTime(
@@ -76,6 +78,7 @@ class SeaServiceTime extends Contract {
         await ctx.stub.putState(_recordId, Buffer.from(JSON.stringify(record)));
 
         ("============= [SeaServiceContract-END] : Adding service time ===========");
+        return record;
     }
 
     async promoteCandidate(ctx, _recordId, _newRank) {
@@ -102,6 +105,8 @@ class SeaServiceTime extends Contract {
         console.info(
             "============= [SeaServiceContract-END] : Promote Candidate ==========="
         );
+
+        return record;
     }
 
     async queryServiceTime(ctx, _recordId) {
@@ -118,7 +123,35 @@ class SeaServiceTime extends Contract {
             throw new Error(`${_recordId} does not exist`);
         }
         console.log(recordAsBytes.toString());
+        console.info(
+            "============= [SeaServiceContract-END] : Query Record ==========="
+        );
         return recordAsBytes.toString();
+    }
+
+    async retireCandidate(ctx, _recordId) {
+        console.info(
+            "============= [SeaServiceContract-START] : Retire candidate ==========="
+        );
+        console.info(
+            `[SeaServiceContract-retireCandidate]: Retiring candidate with with params
+            _recordId:${_recordId}`
+        );
+
+        const recordAsBytes = await ctx.stub.getState(_recordId);
+        if (!recordAsBytes || recordAsBytes.length === 0) {
+            throw new Error(`${_recordId} does not exist`);
+        }
+
+        const record = JSON.parse(recordAsBytes.toString());
+        record.status = "RETIRED";
+
+        await ctx.stub.putState(_recordId, Buffer.from(JSON.stringify(record)));
+
+        console.info(
+            "============= [SeaServiceContract-END] : Retire candidate ==========="
+        );
+        return record;
     }
 
     // ====================  ====================  ====================
