@@ -59,6 +59,7 @@ class SeaServiceTime extends Contract {
             _dateSignIn:${_dateSignIn} | _dateSignOff:${_dateSignOff} | _time:${_time}`
         );
 
+        const val = "ACTIVE";
         const tmpRecord = {
             vesselOwner: _vesselOwner,
             vesselNo: _vesselNo,
@@ -74,7 +75,7 @@ class SeaServiceTime extends Contract {
         const record = JSON.parse(recordAsBytes.toString());
         record.seaTime = String(parseInt(_time) + parseInt(record.seaTime));
         record.serviceTimes.unshift(tmpRecord);
-        record.status = "ACTIVE";
+        record.status = val;
 
         await ctx.stub.putState(_recordId, Buffer.from(JSON.stringify(record)));
 
@@ -131,6 +132,7 @@ class SeaServiceTime extends Contract {
     }
 
     async retireCandidate(ctx, _recordId) {
+        const val = "RETIRED";
         console.info(
             "============= [SeaServiceContract-START] : Retire candidate ==========="
         );
@@ -145,7 +147,7 @@ class SeaServiceTime extends Contract {
         }
 
         const record = JSON.parse(recordAsBytes.toString());
-        record.status = "RETIRED";
+        record.status = val;
 
         await ctx.stub.putState(_recordId, Buffer.from(JSON.stringify(record)));
 
