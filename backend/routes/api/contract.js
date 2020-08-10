@@ -372,6 +372,7 @@ router.get("/query-service/:id", async (req, res) => {
 // @desc        Reitre a candidate
 // @access      Private
 router.put("/retire/:id", async (req, res) => {
+  const recordId = req.params.id;
   try {
     // load the network configuration
     const ccpPath = path.resolve(
@@ -422,7 +423,7 @@ router.put("/retire/:id", async (req, res) => {
     // Evaluate the specified transaction.
     const result = await contract.evaluateTransaction(
       "retireCandidate",
-      req.params.id
+      recordId
     );
     console.log(
       `Transaction has been evaluated, result is: ${result.toString()}`
