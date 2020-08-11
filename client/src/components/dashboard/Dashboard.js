@@ -1,18 +1,32 @@
 import React, { useEffect } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
+import SeafarerDash from "./SeafarerDash";
+import MasterCapt from "./MasterCapt";
+import TransportCanada from "./TransportCanada";
 import Spinner from "../layout/Spinner";
-import { Link } from "react-router-dom";
 
-const Dashboard = ({ auth: { user } }) => {
+const Dashboard = ({ auth: { user, loading } }) => {
   useEffect(() => {}, []);
   return (
     <>
-      <h1 className="large text-primary">Dashboard</h1>
-      <p className="lead">
-        {" "}
-        <i className="fas fa-user">Welcome {user && user.name}</i>
-      </p>
+      {loading ? (
+        <>
+          <Spinner />
+        </>
+      ) : (
+        <>
+          <h1 className="large text-primary">Dashboard</h1>
+          <p className="lead">
+            {" "}
+            <i className="fas fa-user">Welcome {user && user.name}</i>
+          </p>
+
+          {user.role === "seafarer" && <SeafarerDash user={user} />}
+          {user.role === "master/capt" && <MasterCapt user={user} />}
+          {user.role === "tc-canada" && <TransportCanada user={user} />}
+        </>
+      )}
     </>
   );
 };
