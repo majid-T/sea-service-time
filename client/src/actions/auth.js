@@ -18,14 +18,25 @@ export const loadUser = () => async (dispatch) => {
     setAuthToken(localStorage.token);
   }
 
+  const config = {
+    headers: {
+      "Content-Type": "application/json",
+      "Access-Control-Allow-Origin": "*",
+    },
+  };
+
   try {
-    const res = await axios.get("/api/auth");
+    const res = await axios.get(
+      `http://35.225.87.109:5000/api/auth/?token=${localStorage.token}`,
+      config
+    );
 
     dispatch({
       type: USER_LOADED,
       payload: res.data,
     });
   } catch (err) {
+    console.log("Majid", err);
     dispatch({
       type: AUTH_ERROR,
     });
@@ -37,22 +48,31 @@ export const register = ({ name, email, password }) => async (dispatch) => {
   const config = {
     headers: {
       "Content-Type": "application/json",
+      "Access-Control-Allow-Origin": "*",
     },
   };
 
   const body = JSON.stringify({ name, email, password, role: "seafarer" });
 
   try {
-    const res = await axios.post("/api/users", body, config);
+    const res = await axios.post(
+      "http://35.225.87.109:5000/api/users",
+      body,
+      config
+    );
     dispatch({
       type: REGISTER_SUCCESS,
       payload: res.data,
     });
     dispatch(loadUser());
   } catch (err) {
-    const errors = err.response.data.errors;
-    if (errors) {
-      errors.forEach((error) => dispatch(setAlert(error.msg, "danger")));
+    if (err.response) {
+      const errors = err.response.data.errors;
+      if (errors) {
+        errors.forEach((error) => dispatch(setAlert(error.msg, "danger")));
+      }
+    } else {
+      dispatch(setAlert("Something went wrong", "danger", 10000));
     }
     dispatch({
       type: REGISTER_FAIL,
@@ -65,13 +85,18 @@ export const login = (email, password) => async (dispatch) => {
   const config = {
     headers: {
       "Content-Type": "application/json",
+      "Access-Control-Allow-Origin": "*",
     },
   };
 
   const body = JSON.stringify({ email, password });
 
   try {
-    const res = await axios.post("/api/auth", body, config);
+    const res = await axios.post(
+      "http://35.225.87.109:5000/api/auth",
+      body,
+      config
+    );
     dispatch({
       type: LOGIN_SUCCESS,
       payload: res.data,
@@ -79,10 +104,15 @@ export const login = (email, password) => async (dispatch) => {
 
     dispatch(loadUser());
   } catch (err) {
-    const errors = err.response.data.errors;
-    if (errors) {
-      errors.forEach((error) => dispatch(setAlert(error.msg, "danger")));
+    if (err.response) {
+      const errors = err.response.data.errors;
+      if (errors) {
+        errors.forEach((error) => dispatch(setAlert(error.msg, "danger")));
+      }
+    } else {
+      dispatch(setAlert("Something went wrong", "danger", 10000));
     }
+
     dispatch({
       type: LOGIN_FAIL,
     });
