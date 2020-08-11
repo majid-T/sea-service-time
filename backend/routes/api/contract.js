@@ -364,7 +364,17 @@ router.get("/query-service/:id", async (req, res) => {
     res.status(200).json(JSON.parse(result.toString()));
   } catch (err) {
     console.log(err.message);
-    res.status(500).send("Server error");
+
+    if (
+      err.message ===
+      `error in simulation: transaction returned with failure: Error: ${req.params.id} does not exist`
+    ) {
+      res
+        .status(400)
+        .json({ status: "no record for id", msg: "User does not exist" });
+    } else {
+      res.status(500).send("Server error");
+    }
   }
 });
 
