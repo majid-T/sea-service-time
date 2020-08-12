@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import Spinner from "../layout/Spinner";
+import Spinner from "../../layout/Spinner";
 
 const CreateRecord = ({ action, loading }) => {
   const [dateOfBirth, setdateOfBirth] = useState("");

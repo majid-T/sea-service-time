@@ -1,9 +1,9 @@
 import React, { useEffect } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
-import SeafarerDash from "./SeafarerDash";
-import MasterCapt from "./MasterCapt";
-import TransportCanada from "./TransportCanada";
+import SeafarerDash from "./seafarer/SeafarerDash";
+import MasterCapt from "./masterCaptain/MasterCapt";
+import TransportCanada from "./transportCanada/TransportCanada";
 import Spinner from "../layout/Spinner";
 
 const Dashboard = ({ auth: { user, loading, token } }) => {

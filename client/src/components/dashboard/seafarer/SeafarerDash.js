@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { connect } from "react-redux";
-import { setAlert } from "../../actions/alert";
+import { setAlert } from "../../../actions/alert";
 import PropTypes from "prop-types";
 import CreateRecord from "./CreateRecord";
 
