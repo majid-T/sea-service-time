@@ -4,10 +4,9 @@ import { setAlert } from "./alert";
 
 //Get service record
 export const getServiceRecord = (recordId) => async (dispatch) => {
-  console.log("RECORD ID", recordId);
-  dispatch({
-    type: CLEAR_SERVICE_RECORD,
-  });
+  //   dispatch({
+  //     type: CLEAR_SERVICE_RECORD,
+  //   });
   const config = {
     headers: {
       "Content-Type": "application/json",

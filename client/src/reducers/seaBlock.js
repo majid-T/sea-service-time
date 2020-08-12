@@ -17,10 +17,10 @@ export default function (state = initialState, action) {
       };
     case LOGOUT:
     case CLEAR_SERVICE_RECORD:
-    case CONTRACT_ERROR:
+      // case CONTRACT_ERROR:
       return {
         ...state,
-        record: null,
+        record: { b: "b" },
       };
     default:
       return state;

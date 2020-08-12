@@ -31,7 +31,7 @@ export default function (state = initialState, action) {
       };
 
     case REGISTER_FAIL:
-    // case AUTH_ERROR:
+    case AUTH_ERROR:
     case LOGIN_FAIL:
     case LOGOUT:
     case ACCOUNT_DELETED:
@@ -41,6 +41,7 @@ export default function (state = initialState, action) {
         token: null,
         isAuthenticated: false,
         loading: false,
+        user: null,
       };
 
     case USER_LOADED:
