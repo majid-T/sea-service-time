@@ -8,3 +8,6 @@ export const LOGIN_SUCCESS = "LOGIN_SUCCESS";
 export const LOGIN_FAIL = "LOGIN_FAIL";
 export const LOGOUT = "LOGOUT";
 export const ACCOUNT_DELETED = "ACCOUNT_DELETED";
+export const SERVICE_QUERY = "SERVICE_QUERY";
+export const CONTRACT_ERROR = "CONTRACT_ERROR";
+export const CLEAR_SERVICE_RECORD = "CLEAR_SERVICE_RECORD";
