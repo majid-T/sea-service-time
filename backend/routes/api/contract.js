@@ -90,10 +90,22 @@ router.post(
         dateOfBirth,
         cdn
       );
-      console.log(`${result}`);
+      // console.log(`${result}`);
+      const returnedRecord = JSON.parse(result.toString());
+      console.log(returnedRecord);
 
       // Disconnect from the gateway.
       await gateway.disconnect();
+
+      console.log("old user", user);
+      //Adding record id to user Mongo-DB
+      console.log(`Adding ${returnedRecord.recordId}`);
+      //Update values
+      if (user) {
+        user.recordId = returnedRecord.recordId;
+        await user.save();
+      }
+      console.log("new user", user);
 
       res.status(200).send(result.toString());
       //Add chaincode creating code here --END

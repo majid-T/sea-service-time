@@ -21,6 +21,10 @@ const UserSchema = new mongoose.Schema({
     type: Date,
     default: Date.now,
   },
+  recordId: {
+    type: String,
+    required: false,
+  },
 });
 
 module.exports = User = mongoose.model("user", UserSchema);
