@@ -6,11 +6,11 @@ import MasterCapt from "./MasterCapt";
 import TransportCanada from "./TransportCanada";
 import Spinner from "../layout/Spinner";
 
-const Dashboard = ({ auth: { user, loading } }) => {
+const Dashboard = ({ auth: { user, loading, token } }) => {
   useEffect(() => {}, []);
   return (
     <>
-      {loading ? (
+      {loading || !user ? (
         <>
           <Spinner />
         </>
@@ -21,10 +21,9 @@ const Dashboard = ({ auth: { user, loading } }) => {
             {" "}
             <i className="fas fa-user">Welcome {user && user.name}</i>
           </p>
-
-          {user.role === "seafarer" && <SeafarerDash user={user} />}
-          {user.role === "master/capt" && <MasterCapt user={user} />}
-          {user.role === "tc-canada" && <TransportCanada user={user} />}
+          {user.role === "seafarer" && <SeafarerDash />}
+          {user.role === "master/capt" && <MasterCapt />}
+          {user.role === "tc-canada" && <TransportCanada />}
         </>
       )}
     </>
