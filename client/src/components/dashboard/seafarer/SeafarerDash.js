@@ -4,6 +4,7 @@ import { connect } from "react-redux";
 import { setAlert } from "../../../actions/alert";
 import PropTypes from "prop-types";
 import CreateRecord from "./CreateRecord";
+import SeaRecordCard from "./SeaRecordCard";
 
 const SeafarerDash = ({ auth: { user, token }, setAlert }) => {
   const [userRecord, setUserRecord] = useState({});
@@ -70,18 +71,7 @@ const SeafarerDash = ({ auth: { user, token }, setAlert }) => {
       <h1>Seafarer</h1>
       <hr></hr>
       {recordId ? (
-        <>
-          <h1>Show record</h1>
-          <p>{userRecord.name}</p>
-          <p>{userRecord.cdn}</p>
-          <p>{userRecord.dateOfBirth}</p>
-          <p>{userRecord.dateOfBirth}</p>
-          <p>{userRecord.rank}</p>
-          <p>{userRecord.recordId}</p>
-          <p>{userRecord.seaTime}</p>
-          <p>{userRecord.status}</p>
-          {/* <p>{record.serviceTimes.length}</p> */}
-        </>
+        <SeaRecordCard userRecord={userRecord} />
       ) : (
         <CreateRecord action={register} loading={loading} />
       )}
