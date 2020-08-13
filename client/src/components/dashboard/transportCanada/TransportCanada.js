@@ -83,7 +83,6 @@ const TransportCanada = ({ auth: { user, token }, setAlert }) => {
         config
       );
 
-      console.log(res.data);
       setUserRecord(res.data);
       setAlert(`User ${res.data.name} retired successfuly`, "success");
       setLoading(false);
@@ -116,6 +115,7 @@ const TransportCanada = ({ auth: { user, token }, setAlert }) => {
           <button className="btn btn-primary" onClick={getServiceRecord}>
             <i className="fas fa-search"></i> Find Record
           </button>
+          <hr />
           {userRecord && (
             <>
               <select
