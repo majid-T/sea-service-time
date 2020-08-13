@@ -2,20 +2,24 @@ import React from "react";
 import Moment from "react-moment";
 
 const SeaRecordCard = ({ userRecord }) => {
-  const seaRecords = userRecord.serviceTimes.map((res, index) => {
-    return (
-      <tr key={index}>
-        <td className="hide-sm">{index}</td>
-        <td>{res.vesselNo}</td>
-        <td>{res.vesselOwner}</td>
-        <td>
-          <Moment format="YYYY/MM/DD">{res.dateSignIn}</Moment> -
-          <Moment format="YYYY/MM/DD">{res.dateSignOff}</Moment>
-        </td>
-        <td>{res.time}</td>
-      </tr>
-    );
-  });
+  let seaRecords;
+  if (userRecord.serviceTimes) {
+    seaRecords = userRecord.serviceTimes.map((res, index) => {
+      return (
+        <tr key={index}>
+          <td className="hide-sm">{index}</td>
+          <td>{res.vesselNo}</td>
+          <td>{res.vesselOwner}</td>
+          <td>
+            <Moment format="YYYY/MM/DD">{res.dateSignIn}</Moment> -
+            <Moment format="YYYY/MM/DD">{res.dateSignOff}</Moment>
+          </td>
+          <td>{res.time}</td>
+        </tr>
+      );
+    });
+  }
+
   return (
     <>
       {userRecord && (
