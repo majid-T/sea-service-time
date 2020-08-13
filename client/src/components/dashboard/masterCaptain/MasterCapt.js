@@ -81,7 +81,6 @@ const MasterCapt = ({ auth: { user, token }, setAlert }) => {
 
   return (
     <>
-      <h1 className="large text-primary">Add service time</h1>
       <p className="lead bottom-line">
         <i className="fas fa-calendar-plus"></i> Add sea service time for your
         crew
@@ -110,9 +109,7 @@ const MasterCapt = ({ auth: { user, token }, setAlert }) => {
               value={vesselNo}
               onChange={(e) => onChange(e)}
             />
-            <small className="form-text">
-              Could be your own or a company website
-            </small>
+            <small className="form-text">Vessel registration number</small>
           </div>
           <div className="form-group">
             <input
@@ -143,6 +140,7 @@ const MasterCapt = ({ auth: { user, token }, setAlert }) => {
               value={dateSignIn}
               onChange={(e) => onChange(e)}
             />
+            <small className="form-text">Date seafarer signed in onboard</small>
           </div>
           <div className="form-group">
             <input
@@ -151,6 +149,9 @@ const MasterCapt = ({ auth: { user, token }, setAlert }) => {
               value={dateSignOff}
               onChange={(e) => onChange(e)}
             />
+            <small className="form-text">
+              Date seafarer signed off the vessel
+            </small>
           </div>
           <input type="submit" className="btn btn-primary my-1" />
         </form>
