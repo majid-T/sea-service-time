@@ -14,6 +14,10 @@ const TransportCanada = ({ auth: { user, token }, setAlert }) => {
 
   //user record query
   const getServiceRecord = async (_id) => {
+    if (recordId.length === 0) {
+      setAlert("Please type in user record id first", "danger");
+      return;
+    }
     const config = {
       headers: {
         "Content-Type": "application/json",
@@ -96,28 +100,29 @@ const TransportCanada = ({ auth: { user, token }, setAlert }) => {
   return (
     <>
       <h1 className="large text-primary">Query Seafarer</h1>
-      <p className="lead">
+      <p className="lead bottom-line">
         <i className="fas fa-address-book"></i> Enter Candidate record id
       </p>
       {loading ? (
         <Spinner />
       ) : (
         <>
-          <div className="form-group">
+          <div className="form w50 p-2 m-2">
             <input
               type="text"
               placeholder="Candidate record id"
               name="recordId"
               value={recordId}
               onChange={(e) => setRecordId(e.target.value)}
+              required
             />
+
+            <button className="btn btn-primary" onClick={getServiceRecord}>
+              <i className="fas fa-search"></i> Find Record
+            </button>
           </div>
-          <button className="btn btn-primary" onClick={getServiceRecord}>
-            <i className="fas fa-search"></i> Find Record
-          </button>
-          <hr />
           {userRecord && (
-            <>
+            <div className="card-actions">
               <select
                 name="rank"
                 value={rank}
@@ -133,9 +138,8 @@ const TransportCanada = ({ auth: { user, token }, setAlert }) => {
               <button className="btn btn-primary" onClick={retireUser}>
                 <i className="fas fa-hot-tub"></i> Retire
               </button>
-            </>
+            </div>
           )}
-          <hr />
           {userRecord && <SeaRecordCard userRecord={userRecord} />}
         </>
       )}
