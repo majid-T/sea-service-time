@@ -82,13 +82,14 @@ const MasterCapt = ({ auth: { user, token }, setAlert }) => {
   return (
     <>
       <h1 className="large text-primary">Add service time</h1>
-      <p className="lead">
-        <i className="fas fa-user"></i> Add sea service time for your crew
+      <p className="lead bottom-line">
+        <i className="fas fa-calendar-plus"></i> Add sea service time for your
+        crew
       </p>
       {loading ? (
         <Spinner />
       ) : (
-        <form className="form" onSubmit={(e) => onSubmit(e)}>
+        <form className="form shadow1 w50 p-1" onSubmit={(e) => onSubmit(e)}>
           <div className="form-group">
             <input
               type="text"
