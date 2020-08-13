@@ -93,3 +93,14 @@ Checked functions will change the state of blockchain and will cause a transacti
         height="65%"
       />
   </div>
+
+## How Authentication and Authorization is determined in this MVP product
+
+ <div align="center" >
+      <img
+        src="./media/AA.png"
+        alt="stateDg"
+        width="65%"
+        height="65%"
+      />
+  </div>
