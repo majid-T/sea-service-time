@@ -17,8 +17,16 @@ const Dashboard = ({ auth: { user, loading, token } }) => {
       ) : (
         <>
           <p className="lead">
-            {" "}
-            <i className="fas fa-user">Welcome {user && user.name}</i>
+            <span className="large text-primary">
+              {user.role === "seafarer" && <i className="fas fa-hard-hat"></i>}
+              {user.role === "master/capt" && (
+                <i className="fas fa-user-tie"></i>
+              )}
+              {user.role === "tc-canada" && (
+                <i className="fab fa-canadian-maple-leaf"></i>
+              )}{" "}
+              Welcome {user && user.name}
+            </span>
           </p>
           {user.role === "seafarer" && <SeafarerDash />}
           {user.role === "master/capt" && <MasterCapt />}
