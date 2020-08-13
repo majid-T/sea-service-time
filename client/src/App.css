@@ -360,6 +360,17 @@ button {
   .navbar .welcome {
     display: none;
   }
+
+  /* Service card actions*/
+  .card-actions {
+    margin-right: 0;
+    margin-top: 0;
+    float: right;
+  }
+
+  .card-actions select {
+    font-size: 1rem;
+  }
 }
 
 /* Shadows */
@@ -413,4 +424,15 @@ button {
 .table th {
   background: var(--dark-color);
   color: var(--light-color);
+}
+
+/* Service card actions*/
+.card-actions {
+  margin-right: 1rem;
+  margin-top: -1rem;
+  float: right;
+}
+
+.card-actions select {
+  font-size: 1rem;
 }
