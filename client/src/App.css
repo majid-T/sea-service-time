@@ -288,16 +288,6 @@ button {
   color: #0077b5;
 }
 
-.table th,
-.table td {
-  padding: 1rem;
-  text-align: left;
-}
-
-.table th {
-  background: var(--light-color);
-}
-
 /* Navbar */
 .navbar {
   display: flex;
@@ -574,4 +564,57 @@ button {
   .post button {
     padding: 0.3rem 0.4rem;
   }
+}
+
+/* */
+.shadow1 {
+  box-shadow: 5px 10px 8px #888888;
+}
+
+/*Record Card*/
+.recordCard {
+  border-radius: 5px;
+  border: solid black;
+  background-color: lightgray;
+}
+
+.recordCard .badge {
+  color: var(--light-color);
+  border-radius: 0.5rem;
+  margin: -2rem;
+  font-size: 1.5rem;
+  padding: 0.3rem;
+  text-align: center;
+  background: var(--dark-color);
+}
+
+.recordCard h3 {
+  border-bottom: solid 1px var(--primary-color);
+}
+
+.recordCard .row:after {
+  content: "";
+  display: table;
+  clear: both;
+}
+
+.recordCard .column {
+  float: left;
+  width: 49%;
+  padding: 1rem;
+}
+
+/* Table */
+.table {
+  width: 100%;
+}
+.table th,
+.table td {
+  padding: 1rem;
+  text-align: center;
+}
+
+.table th {
+  background: var(--dark-color);
+  color: var(--light-color);
 }
