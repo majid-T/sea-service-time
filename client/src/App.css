@@ -212,7 +212,8 @@ img {
   border: #ccc solid 1px;
 }
 
-.btn:hover {
+.btn:hover,
+.copy:hover {
   opacity: 0.8;
 }
 

@@ -1,7 +1,19 @@
-import React from "react";
+import React, { useState } from "react";
 import Moment from "react-moment";
+import copy from "copy-to-clipboard";
 
 const SeaRecordCard = ({ userRecord }) => {
+  const [copyMsg, setCopyMsg] = useState("");
+
+  const copyRecordId = () => {
+    copy(userRecord.recordId);
+    setCopyMsg("copied!");
+
+    setTimeout(() => {
+      setCopyMsg("");
+    }, 2000);
+  };
+
   let seaRecords;
   if (userRecord.serviceTimes) {
     seaRecords = userRecord.serviceTimes.map((res, index) => {
@@ -31,7 +43,9 @@ const SeaRecordCard = ({ userRecord }) => {
             <div className="column">
               <p>
                 <i className="fas fa-user-tag"></i> Record Id:{" "}
-                {userRecord.recordId}
+                {userRecord.recordId}{" "}
+                <i className="fas fa-copy copy" onClick={copyRecordId}></i>
+                <small className="form-text"> {copyMsg}</small>
               </p>
               <p>
                 <i className="far fa-id-badge"></i> CDN: {userRecord.cdn}
@@ -39,7 +53,7 @@ const SeaRecordCard = ({ userRecord }) => {
             </div>
             <div className="column">
               <p>
-                <i className="fas fa-birthday-cake"></i> Date of Birth:{" "}
+                <i className="fas fa-birthday-cake"></i> Date of Birth:
                 {userRecord.dateOfBirth}
               </p>
               <p>
