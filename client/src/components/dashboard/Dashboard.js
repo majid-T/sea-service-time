@@ -6,7 +6,7 @@ import MasterCapt from "./masterCaptain/MasterCapt";
 import TransportCanada from "./transportCanada/TransportCanada";
 import Spinner from "../layout/Spinner";
 
-const Dashboard = ({ auth: { user, loading, token } }) => {
+const Dashboard = ({ auth: { user, loading } }) => {
   useEffect(() => {}, []);
   return (
     <>
