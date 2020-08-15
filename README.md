@@ -1,5 +1,16 @@
 # Sea-Service-Time
 
+ <div align="center" >
+      <img
+        src="./media/landingPage.png"
+        alt="stateDg"
+        width="80%"
+        height="80%"
+      />
+  </div>
+  
+  Demo is available on https://youtu.be/jSpb7x9Qe0I
+
 DAPP on Hyper Ledger Fabric for recording seafarers sea service time on a disterbuted ledger.
 
 This repo conisist of 4 parts
@@ -7,7 +18,7 @@ This repo conisist of 4 parts
 - [backend](https://github.com/majid-T/sea-service-time/tree/master/backend): Which is the part which exposes chaincode function as REST endpoints. It uses JWT for authentication.
 - [blockchain-network](https://github.com/majid-T/sea-service-time/tree/master/blockchain-network): Inlucdes instruction on seting up the network and registering admin and users.
 - [chaincode](https://github.com/majid-T/sea-service-time/tree/master/chaincode/javascript): it inlclude's chaincode package which will be installed on each peer.
-- frontend: the ReacJs frontend part to connect to the fabric nodes.
+- [frontend](https://github.com/majid-T/sea-service-time/tree/master/client): the ReacJs frontend part to connect to the fabric nodes.
 
 ## Modeling Ver:0.3.0
 
@@ -104,3 +115,12 @@ Checked functions will change the state of blockchain and will cause a transacti
         height="65%"
       />
   </div>
+
+### Roles
+
+| Role             | access and capabilities         | MVP created account                                |
+| ---------------- | ------------------------------- | -------------------------------------------------- |
+| transport canada | Promote & retire candidate      | admin@transport-canada.com                         |
+| Master/ Capt     | Adds sea service time           | mark.adams@shippingCoA.com                         |
+| seafarer         | create record using hit/her CDN | you can register for one with your own email       |
+| --               | Query service record            | everybody can query service record using record id |
