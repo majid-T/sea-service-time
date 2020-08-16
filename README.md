@@ -9,7 +9,8 @@
       />
   </div>
   
-  Demo is available on https://youtu.be/jSpb7x9Qe0I
+Demo is available on https://youtu.be/jSpb7x9Qe0I
+Demo plus presentation can be found on https://youtu.be/A0_rhG6UpyE
 
 DAPP on Hyper Ledger Fabric for recording seafarers sea service time on a disterbuted ledger.
 
@@ -20,7 +21,7 @@ This repo conisist of 4 parts
 - [chaincode](https://github.com/majid-T/sea-service-time/tree/master/chaincode/javascript): it inlclude's chaincode package which will be installed on each peer.
 - [frontend](https://github.com/majid-T/sea-service-time/tree/master/client): the ReacJs frontend part to connect to the fabric nodes.
 
-## Modeling Ver:0.3.0
+## Modeling Ver:1.0.0
 
 ### Assets
 
